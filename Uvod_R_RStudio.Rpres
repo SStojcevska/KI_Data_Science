@@ -1,0 +1,493 @@
+Uvod u R sintaksu i RStudio IDE
+========================================================
+author: Igor Hut
+date: 24.10.2016.
+autosize: true
+transition: zoom
+
+
+
+R kao kalkulator
+========================================================
+
+- U jednostavnom, konzolnom, rezimu primene R moze biti koriscen kao obican kalkulator
+
+```{r}
+# Sabiranje
+5 + 5 
+
+# Oduzimanje
+5 - 5 
+
+```
+
+
+
+
+R kao kalkulator (nastavak)
+========================================================
+```{r}
+
+ # Deljenje
+(5 + 5)/2 
+
+# Stepenovanje
+2^5
+
+# Modulo
+28%%6
+
+```
+
+
+Dodela vrednosti promenljivoj
+========================================================
+
+
+```{r}
+x <- 10
+
+x
+
+y <- 5
+
+z <- x - y
+
+z
+```
+
+Osnovni tipovi podataka u R-u
+=======================================================
+
+- **numeric** - decimalni brojevi, npr. `3.3`
+- **integers** - celobrojne vrednosti (u principu `numeric`), npr. `4`
+- **logical** - Boolean, `TRUE`, `FALSE`, `1`, `0`
+- **character** - znakovna promenljiva, slovo, znak, string
+
+
+
+Osnovni tipovi podatak u R-u (nastavak)
+=======================================================
+
+```{r}
+
+# Answer to the Ultimate Question of Life, the Universe, and Everything
+my_numeric <- 42
+
+# Navodnici upucuju na tip "character"
+my_character <- "cetrdesetdva"
+
+# Deklarisanje logicke promenljive
+my_logical <- FALSE
+
+```
+
+Kom tipu pripada data promenljiva?
+========================================================
+```{r}
+# Provera tipa
+class(my_numeric)
+class(my_character)
+class(my_logical)
+```
+
+Vektori
+========================================================
+type: sub-section
+
+```{r}
+numeric_vector <- c(1, 10, 49)
+character_vector <- c("a", "b", "c")
+boolean_vector <- c(TRUE, FALSE, TRUE)
+```
+
+Vektori - imenovanje clanova
+=======================================================
+
+```{r}
+# Dobit na pokeru od ponedeljka do petka
+poker_vector <- c(140, -50, 20, -120, 240)
+
+# Dobit na ruletu od ponedeljka do petka
+roulette_vector <- c(-24, -50, 100, -350, 10)
+
+# Imenovanje - names
+names(poker_vector) <- c("Ponedeljak", "Utorak", "Sreda", "Cetvrtak", "Petak")
+names(roulette_vector) <- c("Ponedeljak", "Utorak", "Sreda", "Cetvrtak", "Petak")
+```
+
+Vektori - imenovanje clanova (nastavak)
+======================================================
+
+Alternativa:
+
+```{r}
+dani <- c("Ponedeljak", "Utorak", "Sreda", "Cetvrtak", "Petak")
+names(poker_vector) <- dani
+names(roulette_vector) <- dani
+
+```
+Vektori - imenovanje clanova (nastavak)
+======================================================
+
+```{r}
+poker_vector
+roulette_vector
+```
+
+
+Vektori - racunske operacije
+====================================================
+
+```{r}
+A_vector <- c(1, 2, 3)
+B_vector <- c(4, 5, 6)
+
+# Zbir vektora 'A_vector' i 'B_vector'
+total_vector <- A_vector+B_vector
+  
+# Prikazi 'total_vector' na konzoli 
+total_vector
+```
+Vektori - racunske operacije
+====================================================
+
+```{r}
+# Ukupan dobitak na pokeru
+total_poker <- sum(poker_vector)
+
+# Ukupan dobitak na ruletu
+total_roulette <-sum(roulette_vector)
+
+# Zajedno
+total_week <- total_roulette+total_poker
+
+```
+
+Vektori - racunske operacije
+====================================================
+
+```{r}
+total_poker
+total_roulette
+total_week
+```
+
+Vektori - poredjenje
+===================================================
+
+```{r}
+
+total_poker > total_roulette
+total_poker < total_roulette
+total_poker == total_roulette
+```
+
+Vektori - selekcija
+===================================================
+
+```{r}
+poker_sreda <- poker_vector["Sreda"]
+
+poker_sreda
+
+poker_vector[3]
+```
+
+Vektori - selekcija (nastavak)
+==================================================
+
+```{r}
+
+# Nov vektor selekcijom elemenata vec postojeceg
+
+poker_ut_cet <- poker_vector[c(2,3,4)]
+
+poker_ut_cet
+```
+
+Vektori - selekcija (nastavak)
+==================================================
+```{r}
+roulette_selection <- roulette_vector[2:5]
+
+roulette_selection
+
+```
+
+Vektori - selekcija poredjenjem
+=================================================
+
+Kojim danima si bio u plusu?
+
+```{r}
+poker_plus <- poker_vector > 0
+poker_plus
+
+poker_dobri_dani <- poker_vector[poker_vector>0]
+poker_dobri_dani
+```
+
+Vektori - selekcija poredjenjem (nastavak)
+=================================================
+
+Isto to za rulet (samo malo drugacije).
+
+```{r}
+
+selection_vector <- roulette_vector>0
+
+roulette_dobri_dani <- roulette_vector[selection_vector]
+
+roulette_dobri_dani
+```
+
+Matrice u R-u
+==================================================
+type: sub-section
+
+- Matrica, u R-u, je kolekcija elemenata koji pripadaju istom tipu podataka (numeric, character, ili logical)
+- Rasporedjeni u odredjen broj vrsta i kolona
+- Matrica se moze konstruisati koriscenjem `matrix()` funkcije:
+
+```{r}
+matrix(1:9, byrow = TRUE, nrow = 3)
+```
+
+A sad malo igre sa matricama: Star Wars!
+================================================
+
+U narednih par vezbi cemo analizirati zaradu na blagajnama (box-office) za Star Wars fransizu.
+Definisacemo tri vektora koji sadrze iznose sa zaradama na prva tri filma fransize (u 10^6 $). Prvi element svakog vektora se odnosi na US trziste a drugi na Non-US (izvor: Wikipedia).
+
+```{r}
+
+# Box-office Star Wars: u milionima US!
+# Prvi element: US, drugi element: Non-US 
+new_hope <- c(460.998, 314.4)
+
+empire_strikes <- c(290.475, 247.900)
+
+return_jedi <- c(309.306, 165.8)
+
+# Konstruisemo matricu
+star_wars_matrix <-matrix(c(new_hope, empire_strikes,return_jedi), byrow=TRUE, nrow=3)
+```
+
+=====================================================
+
+```{r}
+star_wars_matrix
+```
+
+**Ovo je prilicno sturo, ne bi bilo lose da imenujemo vrste i kolone..**
+
+**Probajte ovo sami da uradite!**
+
+Imenovanje vrsta i kolona matrice
+====================================================
+
+```{r}
+colnames(star_wars_matrix)<-c("US","non-US")
+
+rownames(star_wars_matrix)<-c("A New Hope",  "The Empire Strikes Back","Return of the Jedi")
+
+star_wars_matrix
+```
+
+Malo racunanja 
+===================================================
+
+Koliko je ukupno svaki od filmova zaradio na blagajnama, u celom svetu?
+
+```{r}
+
+worldwide_vector <- rowSums(star_wars_matrix)
+
+worldwide_vector
+```
+
+Dodavanje kolona matrici
+=================================================
+
+`big_matrix <- cbind(matrix1, matrix2, vector1 ...)`
+
+```{r}
+all_wars_matrix <- cbind(star_wars_matrix, worldwide_vector)
+
+all_wars_matrix
+```
+**Obratite paznju da pridodata kolona nosi ime vektora!**
+
+
+Dodavanje vrsta matrici
+================================================
+
+`rbind()`
+
+Ukljucimo i preostala tri dela sage
+===============================================
+
+```{r}
+box_office_all2 <- c(474.5, 552.5, 310.7, 338.7, 380.3, 468.5)
+
+movie_names2 <- c("The Phantom Menace", "Attack of the Clones", "Revenge of the Sith")
+
+star_wars_matrix2 <- matrix(box_office_all2, nrow = 3, byrow = TRUE)
+
+rownames(star_wars_matrix2) <- c("The Phantom Menace", "Attack of the Clones", "Revenge of the Sith")
+
+colnames(star_wars_matrix2) <- c("US", "non-US")
+```
+
+===================================================
+
+```{r}
+star_wars_matrix2
+```
+
+Povezimo sve podatke u jednu veliku matricu
+===================================================
+
+```{r}
+
+all_wars_matrix <- rbind(star_wars_matrix, star_wars_matrix2)
+
+all_wars_matrix
+```
+
+Sumiranje po vrstama i po kolonama
+===================================================
+
+- `colSums()`
+- `rowSums()`
+
+```{r}
+ukupan_prihod_sve <- colSums(all_wars_matrix)
+
+ukupan_prihod_sve
+```
+
+Selekcija elemenata matrice
+==================================================
+
+- kao i kod vektora mozete koristi operator `[]`
+- `moja_matrica[1,2]` - element iz prve vrste i druge kolone
+- `moja_matrica[1:3, 2:5]` - od prve do trece vrste i od druge do pete kolone
+- `moja_matrica[3, ]`- svi elementi iz trece vrste
+- `moja_matrica[, 3]` - svi elementi iz trece kolone
+
+Opet Star Wars
+==================================================
+
+```{r}
+
+# Prosek non-US po filmu
+non_us_prosek_sve  <-  mean(all_wars_matrix[, 2]) 
+  
+# Prosek non-US za prva dva filma
+non_us_prosek_prva_dva <- mean(all_wars_matrix[1:2, 2])
+```
+
+==================================================
+
+```{r}
+
+non_us_prosek_sve
+
+non_us_prosek_prva_dva
+```
+
+Aritmeticke operacije nad matricama
+==================================================
+
+- Standardni operatori: `+`,`-`, `*`, `/`,...
+- Element-wise, npr. `2*moja_matrica`, mnozi svaki element matrice sa 2
+
+**Primer**: ako je prosecna cena karte 4 dolara koliko je ukupno gledalaca gledalo filmove iz serijala Star Wars (u milionima).
+
+```{r}
+all_wars_matrix/5
+```
+
+
+Aritmeticke operacije nad matricama (nastavak)
+===================================================
+
+- `moja_matrica_1 * moja_matrica_2` generise matricu u kojoj je svaki element proizvod korespodentnih elemenata prve i druge matrice.
+- matricno mnozenje: `%*%`
+
+**Primer**: Cene karata su se zapravo menjale tokom vremena. Izracunajmo ponovo prosecan broj gledala uzimajuci u obzir ovu cinjenicu. Prosecne cene karata su smestene u matrici `cene_karata`
+
+====================================================
+
+```{r}
+# Prosecne cene karata
+cene_karata <- matrix(c(2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7), nrow = 6, byrow = TRUE, dimnames = list(rownames(all_wars_matrix), colnames(all_wars_matrix))) 
+
+# Procena broja posetioca 
+posetioci <- all_wars_matrix/cene_karata
+
+# Prosecan broj US posetioca 
+prosek_us_posetioci <- mean(posetioci[,1])
+
+# Prosecan broj non-US posetioca
+prosek_non_us_posetioci <- mean(posetioci[,2])
+```
+
+==================================================
+
+```{r}
+
+# Procena broja posetioca
+posetioci 
+
+# Prosecan broj US posetioca 
+prosek_us_posetioci  
+
+# Prosecan broj non-US posetioca
+prosek_non_us_posetioci 
+```
+
+Faktori
+===================================================
+type: sub-section
+
+
+
+
+
+
+Literatura
+==================================================
+type: sub-section
+
+![R Programming for Data Science](hero.png)
+***
+## R Programming for Data Science
+Roger D. Peng
+
+
+
+<https://leanpub.com/rprogramming>
+
+On-line resursi
+================================================
+type: sub-section
+
+- <https://www.r-project.org/>
+- The Comprehensive R Archive Network <https://cran.r-project.org/>
+- stack overflow <http://stackoverflow.com/>
+- R bloggers <https://www.r-bloggers.com/>
+- RStudio <https://www.rstudio.com/>
+- RStudio cheatsheets <https://www.rstudio.com/resources/cheatsheets/>
+- ...
+
+
+
+
+
+
+
+
+
