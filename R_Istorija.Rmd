@@ -1,6 +1,6 @@
 ---
 title: "Istorija i pregled programskog jezika R"
-author: "Igor Hut"
+author: "Roger D. Peng"
 date: "24. oktobar 2016."
 output: ioslides_presentation
 ---
