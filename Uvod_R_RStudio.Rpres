@@ -816,10 +816,13 @@ str(my_list$mat)
 Liste - vezba
 ============================================================
 
+<<<<<<< HEAD
 1. Selektuj element u trecoj vrsti i prvoj koloni elementa "mat" u listi `my_list`
 2. Koje su minimalne, a koje maksimalne vrednosti za promenljive "Sepal.Length" i "Sepal.Width" iz elementa "df_iris" koji pripada listi `my_list`. 
 3. Izdvoji podatke za vrstu irisa "setosa" iz elementa "df_iris" koji pripada listi `my_list`.
 
+=======
+>>>>>>> acd8ef1388a8c95f34778af134c3201334273ccb
 Literatura
 ==================================================
 type: sub-section
