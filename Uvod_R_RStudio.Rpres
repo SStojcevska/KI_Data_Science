@@ -453,9 +453,372 @@ Faktori
 ===================================================
 type: sub-section
 
+- Vrlo cesto, podaci pripadaju ogranicenom skupu kategorija
+- Npr. ljudi mogu pripadati *zenskom* ili *muskom* rodu, shodno telesnoj masi ispitanici u nekoj studiji mogu biti podeljeni u kategorije *nedovoljna tel. masa*, *normalna tel. masa*, *prekomerna tel. masa* itd...
+- Kategoricki podaci se u R-u predstavljaju tipom `factor`
+- `factor` je izuzetno bitan tip promenljive u analizi podataka 
 
 
+Faktori (2)
+====================================================
 
+- Za kreiranje faktora moze se koristiti funkcija `factor()`
+
+**Primer:**
+
+Formirajmo vektor `vektor_pol` koji ce sadrzati informaciju o polu pet osoba
+
+```{r}
+vektor_pol <- c("Muski", "Muski", "Zenski", "Muski", "Zenski")
+```
+
+Ocigledno, u ovom slucaju imamo dve kategorije, "Muski" i "Zenski". U zargonu R-a rekli bismo da imamo faktor sa dva nivoa vrednosti *"factor levels"*. Da bismo zaista i formirali vektor faktora primenimo funkciju `factor()`:
+
+```{r}
+vektor_pol_faktor <- factor(vektor_pol)
+
+```
+
+Faktori (3)
+==================================================
+
+```{r}
+vektor_pol_faktor
+
+```
+
+Kao sto mozete videti ovaj `factor` vektor ima dva nivoa: "Muski" i "Zenski"
+
+Faktori (4)
+===================================================
+
+- Dva tipa kategorickih promenljivih:
+  - **Nominalne**
+  - **Ordinalne**
+- Nominalna kategoricka promenljiva ne implicira poredak, tj. ne moze se reci da neki njen nivo "vredi" vise od drugog.
+  - Npr. `vektor_zivotinje` sadrzi kategorije "Slon", "Zirafa", "Konj", "Magarac", "Jez"
+- Ordinalna kategoricka promenljiva upucuje na postojanje prirodnog poretka.
+  - Npr. `vektor_temp`, koji sadrzi kategorije "Niska", "Srednja", "Visoka"
+
+Faktori (5)
+===================================================
+```{r}
+vektor_zivotinje <- c("Slon", "Zirafa", "Konj", "Magarac", "Jez")
+vektor_temp <- c("Visoka", "Visoka", "Srednja", "Niska", "Srednja", "Visoka")
+```
+
+Faktori (6)
+=====================================================
+
+```{r}
+vektor_zivotinje_factor <- factor(vektor_zivotinje)
+vektor_zivotinje_factor
+vektor_temp_factor <- factor(vektor_temp, order = TRUE, levels = c("Niska", "Srednja", "Visoka"))
+vektor_temp_factor
+```
+
+Faktori (7)
+====================================================
+
+- Kada uvezete set podataka (data set) na kojima cete raditi, on ce vrlo cesto sadrzati promenljive tipa `factor` sa razlicitim nivoima (`factor levels`). Da biste promenili nazive ovih nivoa, zbog jasnoce ili nekih drugih razloga, koristite funkciju `levels()`
+
+`levels(factor_vector) <- c("name1", "name2",...)`
+
+Faktori (8)
+=====================================================
+**Primer za vezbu:**
+Dobili ste sirove podatke cije je poreklo izvezna anketa. Jedno od standardnih pitanja se odnosilo na pol ispitanika. Recimo da vektor koji sadrzi ove podatke izgleda ovako:
+
+`pol <- c("Z", "Z", "M", "Z", "M","M","Z","M", "Z","Z","M")`
+
+Zelite da zapocnete analizu podataka i bilo bi dobro da faktore slovne oznake "M" i "Z" prevedete u tip `factor` i preimenujete u  "Muski_pol" i "Zenski_pol" kako bi sve bilo jasno definisano. Ucinite ovo koristeci f-je `factor` i `levels()` kako biste dobili odgovarajuci vektor 'pol_factor'.
+
+Faktori (9)
+======================================================
+
+```{r}
+
+pol <- c("Z", "Z", "M", "Z", "M","M","Z","M", "Z","Z","M")
+
+pol_factor <- factor(pol)
+pol_factor
+
+levels(pol_factor) <- c("Muski_pol", "Zenski_pol") #redosled dodele je bitan za pravilno mapiranje
+pol_factor
+```
+
+Faktori - `summary()`
+====================================================
+
+Zanima vas koliko je muskih i zenskih ispitanika usectvivalo u anketi:
+
+```{r}
+
+summary(pol_factor)
+
+```
+
+Faktori - poredjenje (1)
+===================================================
+
+```{r}
+zena <- pol_factor[1]
+muskarac <- pol_factor[3]
+
+zena
+muskarac
+
+```
+
+Faktori - poredjenje (2)
+===================================================
+
+```{r}
+#Bitka polova
+zena > muskarac
+
+zena==muskarac
+
+```
+**Sa obzirom da su `muski_pol` i `zenski_pol` nominalne kategoricke promenljive njihovo poredjenje nema smisla!**
+
+Faktori - poredjenje (3)
+====================================================
+
+**Primer - Poredjenje ordinalnih kategorickih promenljivih:**
+
+```{r}
+
+brzine <- c("sporo", "brzo", "super_brzo", "sporo", "brzo")
+
+brzine_factor <- factor(brzine, ordered = TRUE, levels = c("sporo", "brzo", "super_brzo"))
+
+summary(brzine_factor)
+
+brzine_factor[2] > brzine_factor[1]
+```
+
+data frame
+====================================================
+type: sub-section
+
+- Sta je `data frame`?
+- Uredjena "tabela" podataka koji mogu biti razlicitog tipa.
+- Kolone (stupci) - promenljive, vrste (redovi) - pojedinacne opservacije
+- Osnovna struktura za smestanje, obradu i analizu podataka u R-u
+
+data frame (2)
+====================================================
+
+- R poseduje ugradjenu bibloteku (*base package*) podataka
+- Pozovite `library(help = "datasets")` da vidite koje sve setove podataka imate kao podrazumevanu opciju u okviru vase instalacije R-a
+- Pozovite `mtcars` iz konzole - iako je u pitanju relativno mali set podataka ipak se ne moze u celosti prikazati u prozoru konzole.
+
+head()
+=====================================================
+
+```{r}
+head(mtcars)
+```
+**Ispisuje `header` i prvih nekoliko vrsta datog data frame-a.**
+
+tail()
+====================================================
+
+```{r}
+tail(mtcars)
+```
+**Ispisuje `header` i poslednjih nekoliko vrsta datog data frame-a.**
+
+str()
+====================================================
+
+```{r}
+str(mtcars)
+```
+**Ispisuje strukturu i delimican sadrzaj datog data frame-a.**
+
+Kreiranje data frame-a
+====================================================
+
+*Izvor podataka [Wikipedia](https://en.wikipedia.org/wiki/Planet)
+```{r}
+planets <- c("Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune");
+type <- c("Terrestrial planet", "Terrestrial planet", "Terrestrial planet", "Terrestrial planet", "Gas giant", "Gas giant", "Gas giant", "Gas giant")
+diameter <- c(0.382, 0.949, 1, 0.532, 11.209, 9.449, 4.007, 3.883); 
+rotation <- c(58.64, -243.02, 1, 1.03, 0.41, 0.43, -0.72, 0.67);
+rings <- c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE);
+
+# Kreiramo data frame:
+planets_df  <-data.frame(planets,type,diameter, rotation, rings)
+
+```
+
+Kreiranje data frame-a (nastavak)
+====================================================
+
+```{r}
+head (planets_df, 5)
+```
+
+- Proverite stukturu `planets_df` koristeci `str()`.
+- Odredite medijanu za `diametar` i `rotation` (hint: mozete koristiti `summary()`).
+
+Selekcija elemenata df-a
+====================================================
+
+- Slicno kao kod vektora i matrica moze se koristiti operator `[]`
+- `my_df[1,2]` selektuje vrednost u prvoj vrsti i drugoj koloni data frame-a `my_df`.
+- `my_df[1:3,2:4]` selektuje vrednosti u vrstama 1,2,3 i kolonama 2,3,4.
+- Sta je rezultat naredbe `my_df[1, ]`?
+
+**Vezba:**
+Selektujte sve vrednosti u prve tri vrste `planets_df`. Selektujte vrednost koja odgovara precniku Merkura.
+
+Selekcija elemenata df-a (nastavak)
+==================================================
+
+Selektujte i prikazite prvih 4 vrednosti u koloni "diameter" df-a `planets_df`
+
+```{r}
+
+planets_df[1:4, "diameter"]
+```
+
+Selekcija kolona df-a (promenljivih) koriscenjem specijalnog znaka `$`
+======================================================================
+
+```{r}
+planets_df$diameter
+
+planets_df$rotation[1:5]
+```
+
+Zadaci za vezbanje:
+=====================================================================
+
+1. Izracunaj i prikazi medijanu i srednju vrednost za precnike i periode rotacije svih planeta koristeci funkcije `median()` i `mean()`.
+2. Ponovi isto za prve cetiri planete.
+3. Izracunaj koliko planeta ima prsten koristeci funkciju `sum()`.
+4. Selektuj sve podatke za planete koje nemaju prsten.
+
+Selekcija elemenata df-a koriscenjem f-je subset()
+====================================================================
+
+- `subset(my_df, subset = some_condition)`
+
+**Primer:** Selekcija podataka o svim planetama koje imaju prsten
+
+```{r}
+subset(planets_df, subset = rings)
+```
+**Vezba:** Selektuj podatke za sve planete koje imaju manji precnik od Zemlje.
+
+Sortiranje elemenata df-a
+==================================================================
+- funkcija `order()` 
+- za opadajuci redosled - argument `decreasing = TRUE`
+```{r}
+a <- c(3, 6, 1, 32, 5)
+
+order(a)
+
+a[order(a)]
+a[order(a, decreasing = TRUE)]
+```
+
+Liste
+==================================================================
+type: sub-section
+
+- Liste predstavljaju uredjenu kolekciju objekata (komponenata) koji mogu biti razlicitog tipa, npr. vektori, matrice, df-ovi ili pak druge liste.
+- Objekti sadrzani u listi ne moraju imati nikakve medjusobne veze.
+- `my_list <- list(comp1, comp2 ...)`
+
+Liste - primer 1
+==================================================================
+
+```{r}
+# Vektor - brojevi (numeric) od 1 do 10
+my_vector <- 1:10 
+# Matrica - numeric od 1 do 9
+my_matrix <- matrix(1:9, ncol = 3)
+# Prvih deset elemenata podrazumevanog df-a 'mtcars'
+my_df <- mtcars[1:10,]
+
+# Konstrukcija liste koja sadrzi sve ove objekte:
+my_list <- list(my_vector, my_matrix, my_df)
+
+```
+
+Liste - primer 1 (nastavak)
+================================================================
+
+```{r}
+str(my_list)
+```
+
+Liste - imenovanje komponenti 
+===============================================================
+
+- Pri formiranju liste: `my_list <- list(name1 = comp1, name2 = comp2)`
+
+- Ukoliko je lista vec formirana, komponente se mogu imenovati i naknadno koristeci f-ju `names()` analogno njenoj primeni koja je prikazana u slucaju vektora:
+   
+  `my_list <- list(comp1, comp2)`
+  
+  `names(my_list) <- c("name1", "name2")`
+  
+Liste - primer 2
+===============================================================
+
+```{r}
+
+# Imenujemo elemente sadrzane u listi 'my_list':
+my_list <- list(vec=my_vector,mat= my_matrix,df= my_df)
+
+# Prikaz na konzoli:
+my_list
+```
+
+Dodavanje elemenata postojecoj listi
+==============================================================
+- najjednostavnije je koristiti funkciju `c()`
+
+```{r}
+my_list <- c(my_list, df_iris = list(iris))
+str(my_list)
+```
+
+Selekcija elemenata liste (1)
+==============================================================
+
+```{r}
+my_list[1]
+str(my_list[1])
+
+my_list[[1]]
+str(my_list[[1]])
+
+```
+
+Selekcija elemenata liste (2)
+=============================================================
+
+```{r}
+
+my_list$mat
+my_list$mat[3, ]
+my_list[[2]][3, ]
+str(my_list$mat)
+```
+
+Liste - vezba
+============================================================
+
+1. Selektuj element u trecoj vrsti i prvoj koloni elementa "mat" u listi `my_list`
+2. Koje su minimalne, a koje maksimalne vrednosti za promenljive "Sepal.Length" i "Sepal.Width" iz elementa "df_iris" koji pripada listi `my_list`. 
+3. Izdvoji podatke za vrstu irisa "setosa" iz elementa "df_iris" koji pripada listi `my_list`.
 
 
 Literatura
